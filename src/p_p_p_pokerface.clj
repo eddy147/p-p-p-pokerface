@@ -52,11 +52,14 @@
 (defn high-card? [hand]
   true)
 
-(defn value [hand]
-  (let [checkers #{[high-card? 0]  [pair? 1]
-                   [two-pairs? 2]  [three-of-a-kind? 3]
-                   [straight? 4]   [flush? 5]
-                   [full-house? 6] [four-of-a-kind? 7]
-                   [straight-flush? 8]}
-        f (fn [[f score]] (if (f hand) score 0))]
-    (apply max (map f checkers))))
+  (defn value [hand]
+    (cond
+      (straight-flush? hand) 8
+      (four-of-a-kind? hand) 7
+      (full-house? hand) 6
+      (flush? hand) 5
+      (straight? hand) 4
+      (three-of-a-kind? hand) 3
+      (two-pairs? hand) 2
+      (pair? hand) 1
+      :else 0))
